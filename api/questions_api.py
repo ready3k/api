@@ -5,6 +5,7 @@ import json
 class Api(Client):
     USERS = '/users'
     BASE_URL = 'https://reqres.in/api'
+    REGISTER = '/register'
 
     def list_users(self):
         url = self.BASE_URL + self.USERS + '?page=2'
@@ -56,6 +57,44 @@ class Api(Client):
         """
         url = self.BASE_URL + self.USERS + F"/{id}"
         return self.delete(url)
+
+    def register_user(self, password: str):
+        """
+        :method:    post
+        :routs:     /api/register
+        :status:    200
+        :body:      {
+                        "email": "eve.holt@reqres.in",
+                        "password": ""
+                    }
+        """
+        url = self.BASE_URL + self.REGISTER
+        payload = json.dumps({
+            "email": "eve.holt@reqres.in",
+            "password": F"{password}"
+        })
+        headers = {
+            'Content-Type': 'application/json'
+        }
+        return self.post(url, headers, payload)
+
+    def register_error(self):
+        """
+            :method:    post
+            :routs:     /api/register
+            :status:    400
+            :body:      {
+                            "email": "eve.holt@reqres.in",
+                        }
+            """
+        url = self.BASE_URL + self.REGISTER
+        payload = json.dumps({
+            "email": "eve.holt@reqres.in",
+        })
+        headers = {
+            'Content-Type': 'application/json'
+        }
+        return self.post(url, headers, payload)
 
 
 api = Api()
